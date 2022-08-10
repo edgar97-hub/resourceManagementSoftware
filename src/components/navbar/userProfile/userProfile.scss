@@ -1,0 +1,106 @@
+.user-profile{
+    position: absolute; 
+    right: 0.9rem; 
+    top: 4rem; 
+    padding: 0.5rem; 
+   // margin-bottom: 0px;
+    background-color: #f2fbff; 
+    width: 24rem;
+    border-radius: 0.5rem; 
+    height: 550px;
+    //border: 0.5px rgb(48, 46, 46) solid;
+    z-index: 1;
+
+    .user-detail{
+
+        display: flex; 
+        justify-content: space-between; 
+        align-items: center; 
+        padding-left: 10px;        
+        padding-right: 10px;
+        //border: 0.5px rgb(48, 46, 46) solid;
+        height: 3rem;
+
+        .button-user{
+            font-size: 1.125rem;
+            line-height: 1.75rem; 
+            font-weight: 600; 
+            //border: 0.5px rgb(48, 46, 46) solid;
+
+        }
+
+    }
+
+    
+    .user-wrapp{
+
+        display: flex; 
+        padding-bottom: 0.5rem; 
+        padding-top: 10px;
+        padding-left: 10px;
+        margin-top: 0.2rem; 
+        //align-items: center; 
+        gap: 1.25rem; 
+        //border: 0.5px rgb(48, 46, 46) solid;
+
+        .user-img{
+            width: 6rem; 
+            height: 6rem; 
+            border-radius: 9999px; 
+            //border: 0.5px rgb(48, 46, 46) solid;
+        }
+         
+        .p-1{
+            margin-top: 1rem;
+            margin-bottom: 0px;
+            font-size: 1rem;
+            line-height: 1.75rem; 
+            font-weight: 550; 
+            //border: 0.5px rgb(48, 46, 46) solid;
+
+        }
+        .p-2{
+            margin: 0px;
+
+            color: #6B7280; 
+            font-size: 0.875rem;
+            //line-height: 1.25rem;
+            //border: 0.5px rgb(48, 46, 46) solid;
+ 
+        }
+        .p-3{
+            margin: 0px;
+            color: #6B7280; 
+            font-size: 0.875rem;
+            //line-height: 1.25rem; 
+            font-weight: 600; 
+            //border: 0.5px rgb(48, 46, 46) solid;
+
+        }
+
+    }
+    .wrapper{
+        //  border: 0.5px rgb(48, 46, 46) solid;
+        //display: flex;
+        //flex-direction: column;
+
+        
+    }
+    .items{
+        display: flex; 
+        padding-left: 1.1rem; 
+        cursor: pointer; 
+        gap: 1.25rem; 
+        //border: 0.5px rgb(48, 46, 46) solid;
+        align-items: center; 
+
+
+
+    }
+    .btn-logout{
+        margin-top: 1.25rem;
+        //border: 0.5px rgb(48, 46, 46) solid;
+ 
+    }
+    
+}
