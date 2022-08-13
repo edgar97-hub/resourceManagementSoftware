@@ -1,3 +1,18 @@
+#data-grid-demo {
+    min-height: 700px;
+    
+  }
+  .popup{
+    border:1px solid rgb(20, 52, 100);
+    background-color: #545f60;
+    position: absolute;
+  }
+  .dx-popup-content{
+
+    //background-color: #545f60;
+    z-index: 1;
+
+  }
 .wrapper-setting{
     //border: 0.5px solid rgb(50, 163, 197);
     width: 100%;
@@ -10,9 +25,9 @@
 .active[data-tab-content]{
     display: block;
     padding: 20px;
-    color: white;
+    color: rgb(17, 16, 16);
         //border:1px solid rgb(20, 52, 100);
-    background-color: #545f60;
+    //background-color: #545f60;
     height: 520px;
     margin: 0px;
     //border-bottom-right-radius:8px ;

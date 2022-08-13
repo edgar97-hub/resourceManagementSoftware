@@ -1,9 +1,12 @@
 import React from 'react'
 import "./setting.scss"
 import {useRef, useEffect} from 'react';
+import { Test,Roles} from "../../components";
+ 
 
 const Setting = () => {
 
+     
     useEffect(() => {
 
         const tabs = document.querySelectorAll("[data-tab-target]");
@@ -33,9 +36,10 @@ const Setting = () => {
 
 
   return (
-    <div class="wrapper-setting">
+    <div className="wrapper-setting">
    
-        <ul className='tabs'>    
+
+       <ul className='tabs'>    
             <li data-tab-target="#home" className='active tab'>Roles</li>
             <li data-tab-target="#pricing" className='tab'>Organigrama</li>
             <li data-tab-target="#about" className='tab'>Procesos</li>
@@ -44,12 +48,10 @@ const Setting = () => {
 
         <div className='tab-content'>
             <div id='home' data-tab-content className='active'>
-                <h1>Roles</h1>
-                <h1>this is the home</h1>
+                <Roles/>
             </div>
             <div id='pricing' data-tab-content>
-                <h1>Organigrama</h1>
-                <h1>this is the pricing</h1>
+                
             </div>
             <div id='about' data-tab-content>
                 <h1>Procesos</h1>
@@ -60,7 +62,7 @@ const Setting = () => {
                 <h1>this is the about</h1>
             </div>
 
-        </div>
+  </div> 
    
     </div>
 

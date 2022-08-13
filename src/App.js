@@ -3,9 +3,12 @@ import React, { useEffect } from 'react';
 import './App.css';
 import Home from "./pages/home/Home";
 import Login from "./pages/login/Login";
+import ForgotPassword from "./pages/login/ForgotPassword";
 import Setting from "./pages/setting/Setting";
+import 'react-notifications/lib/notifications.css';
+import { NotificationContainer } from 'react-notifications';
 
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, Router } from "react-router-dom";
 import { useContext } from "react";
 import { DarkModeContext } from "./contexts/darkModeContext";
 import { AuthContext } from "./contexts/AuthContext";
@@ -40,13 +43,14 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/">
-            <Route path="login" element={<Login />} />
+            <Route path="login" element={<Login />}/>
+            <Route path="forgot-password" element={<ForgotPassword />}/>
+
             <Route index element={<RequireAuth> <Home /> </RequireAuth>}/>
             <Route path="/setting" element={<RequireAuth> <Setting /> </RequireAuth>}/>
-
-            
           </Route>
         </Routes>
+        <NotificationContainer />
       </BrowserRouter>
     </div>
   );
