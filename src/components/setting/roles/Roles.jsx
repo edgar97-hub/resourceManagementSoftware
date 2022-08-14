@@ -20,7 +20,7 @@ import {
   getDocs,
   deleteDoc,
   doc,getDoc,
-  onSnapshot,query,setDoc
+  onSnapshot,query,setDoc,addDoc
 } from "firebase/firestore";
 
 import { db } from "../../../firebase";
@@ -34,9 +34,8 @@ const Roles = () => {
   const [tableData, setTableData] = useState(null)
   const [open, setOpen] = useState(false);
   const [formData, setFormData] = useState(initialValue)
-  const [formDataPermision, setFormDataPermision] = useState([])
+  const [formDataPermision, setFormDataPermision] = useState({})
 
-  const url = `http://localhost:4000/users`
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -87,24 +86,17 @@ const Roles = () => {
 
     if(e.hasOwnProperty('_reactName')){
       const { value, id } = e.target
-      console.log("r: "+value,id)
-      console.log(formData)
-
       setFormData({ ...formData, [id]: value })
     }else{
-      setFormDataPermision(e)
-      console.log("namepermision")
+
+      const formDataPermision2 = {}
+      e.some(el => {
+        formDataPermision2[el.id] = el.id;
+      })
+      setFormDataPermision(formDataPermision2 )
     }
-    
-
-
-    //console.log(e)
-    //console.log("r: "+value,id)
-    //setFormData({ ...formData, [id]: value })
   }
-  const getUsers = () => {
-    fetch(url).then(resp => resp.json()).then(resp => setTableData(resp))
-  }
+ 
 
   const onGridReady = (params) => {
     setGridApi(params)
@@ -121,9 +113,13 @@ const Roles = () => {
           namePermissions.push({id: doc.id, ...doc.data()});
         });
 
-          for(var i = 0;i < Object.keys(oldData.permissions).length;i++){
+
+        if(oldData.permissions){
+          for (const [key, value] of Object.entries(oldData.permissions)) {
+            //console.log(value);
+
             namePermissions.some(el => {
-              if(el.id === oldData.permissions[i]){
+              if(el.id === value){
                   el.is = true;
               }else{
                 el.is = false;
@@ -132,9 +128,23 @@ const Roles = () => {
               el.value = el.name;
             });
           }
+         }
+
+
+        //for(var i = 0;i < Object.keys(oldData.permissions).length;i++){
+          //console.log(oldData.permissions);
+          //namePermissions.some(el => {
+           // if(el.id === oldData.permissions[i]){
+            //    el.is = true;
+            //}else{
+             // el.is = false;
+           // }
+            //el.label = el.name;
+            //el.value = el.name;
+          //});
+         // }
           oldData.permissions = namePermissions;
           setFormData(oldData)
-          //console.log(oldData);
     }
     getdata();
 
@@ -175,60 +185,37 @@ const Roles = () => {
         //console.log(namePermissions);
       // };
    // }
-
-
     //setFormData(oldData)
     handleClickOpen()
   }
   const handleDelete = (id) => {
-    const confirm = window.confirm("Are you sure, you want to delete this row", id)
-    if (confirm) {
-      fetch(url + `/${id}`, { method: "DELETE" }).then(resp => resp.json()).then(resp => getUsers())
-
+    async function deleteData(){
+      await deleteDoc(doc(db, "roles", id));
     }
+    deleteData();
   }
 
   const handleFormSubmit = () => {
-    console.log(formData);
+    console.log(formDataPermision);
 
     if (formData.id) {
-     
-      //console.log(formDataPermision);
-
       async function setData(){
-
         await setDoc(doc(db, "roles", formData.id), {
+          name: formData.name,
+          permissions: formDataPermision
+        });
+      }
+      setData();
+      handleClose()
+    } else {
+      async function addData(){
+        const docRef = await addDoc(collection(db, "roles"), {
           name: formData.name,
           permissions: {0:"ww"}
         });
-
       }
-      setData();
-      console.log("setdata");
-      //const confirm = window.confirm("Are you sure, you want to update this row ?")
-      //confirm && fetch(url + `/${formData.id}`, {
-        //method: "PUT", body: JSON.stringify(formData), headers: {
-       //   'content-type': "application/json"
-       // }
-      //}).then(resp => resp.json())
-       // .then(resp => {
-          handleClose()
-          //getUsers()
-
-        //})
-
-    } else {
-      // adding new user
-      //console.log(formData);
-      //fetch(url, {
-        //method: "POST", body: JSON.stringify(formData), headers: {
-        //  'content-type': "application/json"
-        //}
-      //}).then(resp => resp.json())
-       // .then(resp => {
-          handleClose()
-         // getUsers()
-        //})
+      addData();
+      handleClose()
     }
   }
 
@@ -240,13 +227,9 @@ const Roles = () => {
  
   return (
     <div className="roles"style={{ height: '100%',display: 'flex' }}>
-     
       <Grid align="right" className='grid'>
         <Button variant="contained"   onClick={handleClickOpen}>Add role</Button>
       </Grid>
-   
-   
-
       <div className="aggridreact ag-theme-alpine " style={{ flexGrow: 1   }}>
         <AgGridReact className="ww"
           //rowData={tableData}
@@ -254,10 +237,7 @@ const Roles = () => {
           columnDefs={columnDefs}
           //defaultColDef={defaultColDef}
           onGridReady={onGridReady}
-          animateRows={true} 
-  />
-     
-
+          animateRows={true} />
       </div>
       <FormDialog open={open} handleClose={handleClose}
         data={formData} onChange={eventData} handleFormSubmit={handleFormSubmit} />

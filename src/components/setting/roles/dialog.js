@@ -46,7 +46,7 @@ export default function FormDialog({open,handleClose,data,onChange,handleFormSub
   } else {
     this.setState(value);
   }
-  onChange(event)
+  onChange(value)
 }
 
 
