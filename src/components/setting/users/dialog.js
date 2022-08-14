@@ -1,15 +1,6 @@
 import React, { useState, useEffect } from "react";
-//import Button from '@material-ui/core/Button';
-//import Dialog from '@material-ui/core/Dialog';
-//import DialogActions from '@material-ui/core/DialogActions';
-//import DialogContent from '@material-ui/core/DialogContent';
-//import DialogContentText from '@material-ui/core/DialogContentText';
-//import DialogTitle from '@material-ui/core/DialogTitle';
-//import { TextField } from '@material-ui/core';
 import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
-import options from "./data"
-import MultiSelectAll from "./MultiSelectAll";
-import "./roles.scss";
+import "./users.scss";
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -39,7 +30,6 @@ export default function FormDialog({open,handleClose,data,onChange,handleFormSub
   }, [permissions]);
 
  function eventPermissions(value, event) {
-  //console.log(value);
 
    if (event.action === "deselect-option") {
     this.setState(value.filter((o) => o.value !== "*"));

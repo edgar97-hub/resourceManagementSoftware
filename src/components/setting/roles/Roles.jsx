@@ -25,7 +25,7 @@ import {
 
 import { db } from "../../../firebase";
 
-const initialValue = { name: "", permissions: ""}
+const initialValue = { name: "", permissions: [ ] }
 
 const Roles = () => {
 
@@ -36,7 +36,22 @@ const Roles = () => {
   const [formData, setFormData] = useState(initialValue)
   const [formDataPermision, setFormDataPermision] = useState({})
 
-  const handleClickOpen = () => {
+  const handleClickOpen = (flat) => {
+
+    if(flat === "insert"){
+        console.log("insert");
+      async function getPermissions(){
+        const namePermissions = [];
+        const q = query(collection(db, "permissions"));
+          const querySnapshot = await getDocs(collection(db, "permissions"));
+          querySnapshot.forEach((doc) => {
+            namePermissions.push({id: doc.id, ...doc.data()});
+          });
+          formData.permissions = namePermissions; 
+        }
+      //console.log(formData.permissions);
+      getPermissions()
+    }
     setOpen(true);
   };
   const handleClose = () => {
@@ -55,6 +70,8 @@ const Roles = () => {
       </div>
     }
   ]
+
+
   useEffect(() => {
 
     const unsub = onSnapshot(
@@ -112,7 +129,6 @@ const Roles = () => {
         querySnapshot.forEach((doc) => {
           namePermissions.push({id: doc.id, ...doc.data()});
         });
-
 
         if(oldData.permissions){
           for (const [key, value] of Object.entries(oldData.permissions)) {
@@ -228,7 +244,7 @@ const Roles = () => {
   return (
     <div className="roles"style={{ height: '100%',display: 'flex' }}>
       <Grid align="right" className='grid'>
-        <Button variant="contained"   onClick={handleClickOpen}>Add role</Button>
+        <Button variant="contained"   onClick={() => handleClickOpen("insert")}>Add role</Button>
       </Grid>
       <div className="aggridreact ag-theme-alpine " style={{ flexGrow: 1   }}>
         <AgGridReact className="ww"
