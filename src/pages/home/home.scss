@@ -1,0 +1,48 @@
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poopins', sans-serif;
+}
+
+.home {
+  display: flex;
+  flex: 2;
+  flex-direction: column;
+
+  //border: 5.5px rgb(44, 122, 201) solid;
+  //height: 600px;
+
+
+  //.homeContainer {
+    //flex: 2;
+    //width: 100%;
+   // height: 650px;
+    //display: flex;
+    //flex-wrap: wrap;
+    //gap:10px;
+    //border: 8.5px rgb(44, 122, 201) solid;
+
+  //}
+  .wrapper{
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap:wrap;
+    justify-content: space-evenly;
+    //border: 0.5px rgb(44, 122, 201) solid;
+    margin: 1rem;
+    //padding: 60px;
+    width: 97%;
+    .w{
+
+      //border: 0.5px rgb(44, 122, 201) solid;
+      width: 120px;
+      height: 100px;
+      margin: 80px;
+
+    }
+
+  }
+   
+}
