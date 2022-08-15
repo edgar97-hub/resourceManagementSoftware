@@ -12,19 +12,27 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 
 
-
 export default function FormDialog({open,handleClose,data,onChange,listRoles, handleFormSubmit}) {
- const {id,name,role_id}  = data
- const [dataRow, setDataRow] = React.useState('');
-  
- const handleChange = (event) => {
-  setDataRow(event.target.value);
-  listRoles.some(el => {
-    if(el.name === event.target.value){
-      data.copy_role_id = el.id;
-    } 
-  });
-};
+  const {id,name,role_id}  = data
+  const [dataRow, setDataRow] = useState('');
+    
+  const handleChange = (event) => {
+    setDataRow(event.target.value);
+    listRoles.some(el => {
+      if(el.name === event.target.value){
+        data.copy_role_id = el.id;
+      } 
+    });
+  };
+
+  const handleSubmit = () => {
+    setDataRow("");
+    handleFormSubmit()
+  };
+  const handleClosew = () => {
+    setDataRow("");
+    handleClose()
+  };
 
  useEffect(() => {
   //setCopylistRoles(listRoles)   
@@ -60,10 +68,10 @@ export default function FormDialog({open,handleClose,data,onChange,listRoles, ha
          
         </DialogContent>
         <DialogActions>
-          <Button className="button" onClick={handleClose}   variant="contained">
+          <Button className="button" onClick={handleClosew}   variant="contained">
             Cancelar
           </Button>
-          <Button  className="button"   onClick={()=>handleFormSubmit()} variant="contained">
+          <Button  className="button"   onClick={()=>handleSubmit()} variant="contained">
             {id?"Update":"Submit"}
           </Button>
         </DialogActions>
