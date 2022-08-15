@@ -27,10 +27,10 @@ const Setting = () => {
     <div className="wrapper-setting">
    
         <ul className='tabs'>    
-            <li data-tab-target="#home" className='active tab'>Roleswww</li>
+            <li data-tab-target="#home" className='active tab'>Roles</li>
             <li data-tab-target="#pricing" className='tab'>Organigrama</li>
             <li data-tab-target="#about" className='tab'>Procesos</li>
-            <li data-tab-target="#usuarios" className='tab'>Usuariosss</li>
+            <li data-tab-target="#usuarios" className='tab'>Usuarios</li>
         </ul>
         <div className='tab-content'>
             <div id='home' data-tab-content className='active'>
@@ -44,6 +44,8 @@ const Setting = () => {
                 <h1>this is the about</h1>
             </div>
             <div id='usuarios' data-tab-content>
+            <Users/>
+
             </div>
         </div> 
     </div>

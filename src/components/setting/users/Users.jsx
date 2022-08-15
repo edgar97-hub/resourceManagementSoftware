@@ -14,30 +14,17 @@ import FormDialog from './dialog';
 import {collection,getDocs,deleteDoc,doc,getDoc,onSnapshot,query,setDoc,addDoc} from "firebase/firestore";
 import { db } from "../../../firebase";
 
-const initialValue = { name: "", permissions: [ ] }
+const initialValue = { name: "", role_id:"" }
 
 const Users = () => {
 
   const [data, setData] = useState([]);
+  const [listRoles, setlistRoles] = useState([]);
   const [open, setOpen] = useState(false);
   const [formData, setFormData] = useState(initialValue)
   const [formDataPermision, setFormDataPermision] = useState({})
 
   const handleClickOpen = (flat) => {
-
-    if(flat === "insert"){
-      console.log("insert");
-      async function getPermissions(){
-        const namePermissions = [];
-        const q = query(collection(db, "permissions"));
-          const querySnapshot = await getDocs(collection(db, "permissions"));
-          querySnapshot.forEach((doc) => {
-            namePermissions.push({id: doc.id, ...doc.data()});
-          });
-          formData.permissions = namePermissions; 
-        }
-      getPermissions()
-    }
     setOpen(true);
   };
   const handleClose = () => {
@@ -47,7 +34,7 @@ const Users = () => {
   const columnDefs = [
     { headerName: "ID", field: "id" },
     { headerName: "Name", field: "name" },
-    { headerName: "permissions", field: "permissions", },
+    { headerName: "rol", field: "role_id", },
     {
       headerName: "Actions", field: "id", cellRendererFramework: (params) =>
        <div>
@@ -74,54 +61,48 @@ const Users = () => {
       }
     );
 
+    const unsub2 = onSnapshot(
+      collection(db, "roles"),
+      (snapShot) => {
+        let list = [];
+        snapShot.docs.forEach((doc) => {
+          list.push({ id: doc.id, ...doc.data() });
+        });
+       setlistRoles(list);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+
     return () => {
       unsub();
+      unsub2();
+
     };
 
   }, [])
 
   const eventData = (e) => {
-
-    if(e.hasOwnProperty('_reactName')){
-      const { value, id } = e.target
-      setFormData({ ...formData, [id]: value })
-    }else{
-      const formDataPermision2 = {}
-      e.some(el => {
-        formDataPermision2[el.id] = el.id;
-      })
-      setFormDataPermision(formDataPermision2 )
-    }
+    //console.log(e.target.id);
+    const { value, id } = e.target
+    setFormData({ ...formData, [id]: value })
   }
  
   const handleUpdate = (oldData) => {
 
-    const namePermissions = [];
-
+    const nameRoles = [];
     async function getdata(){
       const q = query(collection(db, "roles"));
         const querySnapshot = await getDocs(collection(db, "roles"));
         querySnapshot.forEach((doc) => {
-          namePermissions.push({id: doc.id, ...doc.data()});
+          nameRoles.push({id: doc.id, ...doc.data()});
         });
-
-        if(oldData.permissions){
-          for (const [key, value] of Object.entries(oldData.permissions)) {
-            namePermissions.some(el => {
-              if(el.id === value){
-                  el.is = true;
-              }else{
-                el.is = false;
-              }
-              el.label = el.name;
-              el.value = el.name;
-            });
-          }
-         }
-        oldData.permissions = namePermissions;
-        setFormData(oldData)
+        console.log(oldData);
+        setlistRoles(nameRoles);
     }
-    getdata();
+    //getdata();
+    setFormData(oldData)
     handleClickOpen()
   }
 
@@ -133,13 +114,13 @@ const Users = () => {
   }
 
   const handleFormSubmit = () => {
-    console.log(formDataPermision);
+    console.log(formData);
 
     if (formData.id) {
       async function setData(){
         await setDoc(doc(db, "users", formData.id), {
           name: formData.name,
-          permissions: formDataPermision
+          role_id: ((formData.copy_role_id)?formData.copy_role_id:formData.role_id)
         });
       }
       setData();
@@ -148,19 +129,13 @@ const Users = () => {
       async function addData(){
         const docRef = await addDoc(collection(db, "users"), {
           name: formData.name,
-          permissions: {0:"ww"}
+          role_id: ((formData.copy_role_id)?formData.copy_role_id:formData.role_id)
         });
       }
       addData();
       handleClose()
     }
   }
-
-   
- 
- 
- 
-   
  
   return (
     <div className="roles"style={{ height: '100%',display: 'flex' }}>
@@ -173,7 +148,7 @@ const Users = () => {
           columnDefs={columnDefs}
           animateRows={true} />
       </div>
-      <FormDialog open={open} handleClose={handleClose}
+      <FormDialog open={open} handleClose={handleClose} listRoles={listRoles}
         data={formData} onChange={eventData} handleFormSubmit={handleFormSubmit} />
     </div>
   );
