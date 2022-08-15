@@ -323,7 +323,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	diagram.showGrid = false;
 	diagram.allowSelfLoops = false;
 	diagram.linkShape = LinkShape.Cascading;
-	diagram.backBrush = '#ffffff';
+	diagram.backBrush = '#17355e';
 
 	//add an EventListener for clicked events
 	diagram.addEventListener(Event.clicked, function (diagram, eventArgs) {

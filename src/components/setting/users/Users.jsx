@@ -38,8 +38,8 @@ const Users = () => {
     {
       headerName: "Actions", field: "id", cellRendererFramework: (params) =>
        <div>
-        <Button className="button" variant="outlined"    /* startIcon={<EditIcon/>}*/ onClick={() => handleUpdate(params.data)}>Update</Button>
-        <Button className="button" variant="outlined"   onClick={() => handleDelete(params.value)}>Delete</Button>
+        <Button className="button" variant="contained"    /* startIcon={<EditIcon/>}*/ onClick={() => handleUpdate(params.data)}>Update</Button>
+        <Button className="button" variant="contained"   onClick={() => handleDelete(params.value)}>Delete</Button>
       </div>
     }
   ]
@@ -50,25 +50,34 @@ const Users = () => {
     const unsub = onSnapshot(
       collection(db, "users"),
       (snapShot) => {
-        let list = [];
-        snapShot.docs.forEach((doc) => {
-          list.push({ id: doc.id, ...doc.data() });
-        });
-        setData(list);
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
 
-    const unsub2 = onSnapshot(
-      collection(db, "roles"),
-      (snapShot) => {
-        let list = [];
-        snapShot.docs.forEach((doc) => {
-          list.push({ id: doc.id, ...doc.data() });
-        });
-       setlistRoles(list);
+          const namePermissions = [];
+          async function getdata(){
+              const q = query(collection(db, "roles"));
+              const querySnapshot = await getDocs(collection(db, "roles"));
+                querySnapshot.forEach((doc) => {
+                namePermissions.push({id: doc.id, ...doc.data()});
+              });
+
+              setlistRoles(namePermissions);
+              let list = [];
+              let data = {};
+              snapShot.docs.forEach((doc) => {
+                data = doc.data();
+                namePermissions.some(el => {
+                  if(el.id === doc.data().role_id){
+                    data.role_id = el.name;
+                    data.field_extra = el.id;
+                  } 
+                });
+                list.push({ id: doc.id,...data });
+              });
+              setData(list);
+        }
+        getdata();
+
+
+        
       },
       (error) => {
         console.log(error);
@@ -77,7 +86,6 @@ const Users = () => {
 
     return () => {
       unsub();
-      unsub2();
     };
 
   }, [])
@@ -100,13 +108,13 @@ const Users = () => {
   }
 
   const handleFormSubmit = () => {
-    //console.log(formData);
+    console.log(formData);
 
     if (formData.id) {
       async function setData(){
         await setDoc(doc(db, "users", formData.id), {
           name: formData.name,
-          role_id: ((formData.copy_role_id)?formData.copy_role_id:formData.role_id)
+          role_id: ((formData.copy_role_id)?formData.copy_role_id:formData.field_extra)
         });
       }
       setData();
@@ -115,7 +123,7 @@ const Users = () => {
       async function addData(){
         const docRef = await addDoc(collection(db, "users"), {
           name: formData.name,
-          role_id: ((formData.copy_role_id)?formData.copy_role_id:formData.role_id)
+          role_id: ((formData.copy_role_id)?formData.copy_role_id:"")
         });
       }
       addData();

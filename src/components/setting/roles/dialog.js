@@ -7,8 +7,6 @@ import React, { useState, useEffect } from "react";
 //import DialogTitle from '@material-ui/core/DialogTitle';
 //import { TextField } from '@material-ui/core';
 import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
-import options from "./data"
-import MultiSelectAll from "./MultiSelectAll";
 import "./roles.scss";
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
@@ -17,7 +15,12 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-
+import ListItemText from '@mui/material/ListItemText';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Checkbox from '@mui/material/Checkbox';
+import MenuItem from '@mui/material/MenuItem';
+import InputLabel from '@mui/material/InputLabel';
+import OutlinedInput from '@mui/material/OutlinedInput';
 
 
 export default function FormDialog({open,handleClose,data,onChange,handleFormSubmit}) {
@@ -25,33 +28,34 @@ export default function FormDialog({open,handleClose,data,onChange,handleFormSub
  const [selectedOptions, setSelectedOptions] = useState([]);
 
  useEffect(() => {
-  const w = [];
-  if(permissions){
-    for (const element of permissions) {
-      if(element.is === true){
-        w.push(element);
-      }
-    }
-    setSelectedOptions(w);
-  }else{ 
 
-  }
+  const w2 = [];
+  permissions.some(el => {
+    if(el.is){
+      w2.push(el.name);
+    }
+  });
+  setPersonName(w2);
   }, [permissions]);
 
- function eventPermissions(value, event) {
-  //console.log(value);
-
-   if (event.action === "deselect-option") {
-    this.setState(value.filter((o) => o.value !== "*"));
-  } else if (value.length === this.options.length - 1) {
-    this.setState(this.options);
-  } else {
-    this.setState(value);
-  }
-  onChange(value)
-}
  
+ 
+  const [personName, setPersonName] = useState([]);
 
+  const handleChange = (event) => {
+    const { target: { value },} = event;
+    setPersonName(typeof value === 'string' ? value.split(',') : value);
+    var ee = {"permissions":typeof value === 'string' ? value.split(',') : value};
+
+    const w3 = [];
+    permissions.some(el => {
+      if(ee.permissions.includes(el.name)){
+        w3.push(el.id);
+      }
+    });
+    onChange(w3)
+  };
+ 
   return (
     <div>
       <Dialog className='dialog'
@@ -64,14 +68,29 @@ export default function FormDialog({open,handleClose,data,onChange,handleFormSub
         <DialogContent className='dialog-content'>
          <form className='form-dialog-content'>
             <TextField  autoFocus label="rol" variant="filled"  className="textFieldw "id="name" value={name} onChange={e=>onChange(e)} placeholder="rol"     />
-            {/* TextField id="permissions" value={permissions} onChange={e=>eventData(e)} placeholder="permissions" label="permissions" variant="outlined" margin="dense" fullWidth />*/}
-            <ReactMultiSelectCheckboxes  size={2} className="multiSelectCheckboxes"
-                  options={permissions}
-                  placeholderButtonLabel="permissions"
-                  value={selectedOptions}
-                  onChange={eventPermissions}
-                  setState={setSelectedOptions}
-                  />
+              <Select
+                labelId="demo-multiple-checkbox-label"
+                id="demo-multiple-checkbox"
+                multiple
+                value={personName}
+                onChange={handleChange}
+                input={<OutlinedInput label="Tag" />}
+                renderValue={(selected) => selected.join(', ')}
+                fullWidth
+              >
+                {permissions.map((element) => (
+                  <MenuItem key={element.name} value={element.name}>
+                    <Checkbox  checked={personName.indexOf(element.name) > -1}/>
+                    <ListItemText primary={element.name} />
+                  </MenuItem>
+                ))}
+                 
+                
+
+               
+
+              </Select>
+
          </form>
          
         </DialogContent>

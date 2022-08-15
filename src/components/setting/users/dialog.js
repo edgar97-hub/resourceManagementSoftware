@@ -60,7 +60,7 @@ export default function FormDialog({open,handleClose,data,onChange,listRoles, ha
              onChange={handleChange}
               >
              {listRoles.map((element) => (
-                ((element.id === role_id)?<MenuItem key={element.id} value="">{element.name}</MenuItem> : <MenuItem  key={element.id} value={element.name}>{element.name}</MenuItem>)
+                ((element.name === role_id)?<MenuItem key={element.id} value="">{element.name}</MenuItem> : <MenuItem  key={element.id} value={element.name}>{element.name}</MenuItem>)
               ))}
             </Select>
 

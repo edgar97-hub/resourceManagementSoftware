@@ -12,9 +12,7 @@ import Grid from '@mui/material/Grid';
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from '@mui/icons-material/Edit';
 import { DataGrid,GridToolbar } from '@mui/x-data-grid';
-
 import FormDialog from './dialog';
-
 import {
   collection,
   getDocs,
@@ -22,39 +20,27 @@ import {
   doc,getDoc,
   onSnapshot,query,setDoc,addDoc
 } from "firebase/firestore";
-
 import { db } from "../../../firebase";
 
-const initialValue = { name: "", permissions: [ ] }
+const initialValue = { name: "", permissions: [ ] };
 
 const Roles = () => {
 
   const [data, setData] = useState([]);
-  const [gridApi, setGridApi] = useState(null)
-  const [tableData, setTableData] = useState(null)
+  const [gridApi, setGridApi] = useState(null);
+  const [tableData, setTableData] = useState([]);
   const [open, setOpen] = useState(false);
-  const [formData, setFormData] = useState(initialValue)
-  const [formDataPermision, setFormDataPermision] = useState({})
+  const [formData, setFormData] = useState(initialValue);
+  const [formDataPermision, setFormDataPermision] = useState({});
+  var permissions = [];
 
   const handleClickOpen = (flat) => {
-
-    if(flat === "insert"){
-        console.log("insert");
-      async function getPermissions(){
-        const namePermissions = [];
-        const q = query(collection(db, "permissions"));
-          const querySnapshot = await getDocs(collection(db, "permissions"));
-          querySnapshot.forEach((doc) => {
-            namePermissions.push({id: doc.id, ...doc.data()});
-          });
-          formData.permissions = namePermissions; 
-        }
-      //console.log(formData.permissions);
-      getPermissions()
-    }
     setOpen(true);
   };
   const handleClose = () => {
+    permissions.some(el => {
+      el.is = false;
+    });
     setOpen(false);
     setFormData(initialValue)
   };
@@ -65,8 +51,8 @@ const Roles = () => {
     {
       headerName: "Actions", field: "id", cellRendererFramework: (params) =>
        <div>
-        <Button className="button" variant="outlined"    /* startIcon={<EditIcon/>}*/ onClick={() => handleUpdate(params.data)}>Update</Button>
-        <Button className="button" variant="outlined"   onClick={() => handleDelete(params.value)}>Delete</Button>
+        <Button className="button" variant="contained"    /* startIcon={<EditIcon/>}*/ onClick={() => handleUpdate(params.data)}>Update</Button>
+        <Button className="button" variant="contained"   onClick={() => handleDelete(params.value)}>Delete</Button>
       </div>
     }
   ]
@@ -77,11 +63,21 @@ const Roles = () => {
     const unsub = onSnapshot(
       collection(db, "roles"),
       (snapShot) => {
+        const namePermissions = [];
+        async function getPermissions(){
+            const q = query(collection(db, "permissions"));
+            const querySnapshot = await getDocs(collection(db, "permissions"));
+              querySnapshot.forEach((doc) => {
+              namePermissions.push({id: doc.id, ...doc.data()});
+            });
+            permissions = namePermissions;
+        }
+        getPermissions();
         let list = [];
-        snapShot.docs.forEach((doc) => {
-          list.push({ id: doc.id, ...doc.data() });
-        });
-        setData(list);
+            snapShot.docs.forEach((doc) => {
+              list.push({ id: doc.id, ...doc.data() });
+            });
+            setData(list);
       },
       (error) => {
         console.log(error);
@@ -100,17 +96,12 @@ const Roles = () => {
     //floatingFilter: true
   }
   const eventData = (e) => {
-
-    if(e.hasOwnProperty('_reactName')){
+    
+    if(e.target){
       const { value, id } = e.target
       setFormData({ ...formData, [id]: value })
     }else{
-
-      const formDataPermision2 = {}
-      e.some(el => {
-        formDataPermision2[el.id] = el.id;
-      })
-      setFormDataPermision(formDataPermision2 )
+      setFormData({ ...formData, ["permission_identifiers"]: e })
     }
   }
  
@@ -121,87 +112,17 @@ const Roles = () => {
   
   const handleUpdate = (oldData) => {
 
-    const namePermissions = [];
-
-    async function getdata(){
-      const q = query(collection(db, "permissions"));
-        const querySnapshot = await getDocs(collection(db, "permissions"));
-        querySnapshot.forEach((doc) => {
-          namePermissions.push({id: doc.id, ...doc.data()});
-        });
-
-        if(oldData.permissions){
-          for (const [key, value] of Object.entries(oldData.permissions)) {
-            //console.log(value);
-
-            namePermissions.some(el => {
-              if(el.id === value){
-                  el.is = true;
-              }else{
-                el.is = false;
-              }
-              el.label = el.name;
-              el.value = el.name;
-            });
-          }
-         }
-
-
-        //for(var i = 0;i < Object.keys(oldData.permissions).length;i++){
-          //console.log(oldData.permissions);
-          //namePermissions.some(el => {
-           // if(el.id === oldData.permissions[i]){
-            //    el.is = true;
-            //}else{
-             // el.is = false;
-           // }
-            //el.label = el.name;
-            //el.value = el.name;
-          //});
-         // }
-          oldData.permissions = namePermissions;
-          setFormData(oldData)
+    for (const [key, value] of Object.entries(oldData.permissions)) {
+      permissions.some(el => {
+        if(el.id === value){
+          el.is = true;
+        } 
+      });
     }
-    getdata();
-
-
-    //for (let id in oldData.permissions) {
-      //const postSnap =  db.collection("permissions").doc(id).get();
-      //namePermissions.push(postSnap.data());
-
-      
-      //async function r (){
-
-        //const ref = doc(db, "permissions", "cUOZO2Kkg2mZGSnFpCVt");
-        //const docSnap = await getDoc(ref);
-        //if (docSnap.exists()) {
-         // console.log(docSnap.data());
-        //} else {
-        //  console.log("No such document!");
-        //}
-
-
-        //const q = query(collection(db, "permissions"));
-        //const querySnapshot = await getDocs(collection(db, "permissions"));
-        //querySnapshot.forEach((doc) => {
-
-          //console.log(doc.id, " => ", doc.data());
-          //namePermissions.push(doc.data());
-
-        //});
-
-
-        //const postSnap = await db.collection("permissions").doc("cUOZO2Kkg2mZGSnFpCVt").get();
-        //namePermissions.push(postSnap.data());
-        //const querySnapshot = await getDocs(collection(db, "permissions"));
-        //querySnapshot .forEach((doc) => {
-          // doc.data() is never undefined for query doc snapshots
-          //console.log(doc.id, " => ", doc.data());
-        //});
-        //console.log(namePermissions);
-      // };
-   // }
-    //setFormData(oldData)
+    //console.log(permissions)
+    oldData.oldpermissions = oldData.permissions;
+    oldData.permissions = permissions;
+    setFormData(oldData)
     handleClickOpen()
   }
   const handleDelete = (id) => {
@@ -212,13 +133,13 @@ const Roles = () => {
   }
 
   const handleFormSubmit = () => {
-    console.log(formDataPermision);
+    console.log(formData);
 
     if (formData.id) {
       async function setData(){
         await setDoc(doc(db, "roles", formData.id), {
           name: formData.name,
-          permissions: formDataPermision
+          permissions: (formData.permission_identifiers)?formData.permission_identifiers:formData.oldpermissions
         });
       }
       setData();
@@ -227,7 +148,7 @@ const Roles = () => {
       async function addData(){
         const docRef = await addDoc(collection(db, "roles"), {
           name: formData.name,
-          permissions: {0:"ww"}
+          permissions: (formData.permission_identifiers)?formData.permission_identifiers:""
         });
       }
       addData();

@@ -33,7 +33,7 @@ function App() {
   const ExtraPath = ({ children }) => {
     return  <Navigate     //replace={true} from="/"
     to={{
-      pathname: "/test/OrgChartEditor.html",
+      pathname: "/test/OrgChart.html",
     }}
      />;
   };
@@ -53,7 +53,7 @@ function App() {
             <Route path="forgot-password" element={<ForgotPassword />}/>
             <Route index element={<RequireAuth> <Home /> </RequireAuth>}/>
             <Route path="/setting" element={<RequireAuth> <Setting /> </RequireAuth>}/>
-            {/*<Route  exact path="/rrr" element={<ExtraPath></ExtraPath>}/>*/}
+            <Route  exact path="/OrgChart" element={<ExtraPath></ExtraPath>}/>
           </Route>
         </Routes>
         <NotificationContainer />
