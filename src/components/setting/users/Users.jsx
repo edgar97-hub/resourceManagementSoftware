@@ -78,30 +78,16 @@ const Users = () => {
     return () => {
       unsub();
       unsub2();
-
     };
 
   }, [])
 
   const eventData = (e) => {
-    //console.log(e.target.id);
     const { value, id } = e.target
     setFormData({ ...formData, [id]: value })
   }
  
   const handleUpdate = (oldData) => {
-
-    const nameRoles = [];
-    async function getdata(){
-      const q = query(collection(db, "roles"));
-        const querySnapshot = await getDocs(collection(db, "roles"));
-        querySnapshot.forEach((doc) => {
-          nameRoles.push({id: doc.id, ...doc.data()});
-        });
-        console.log(oldData);
-        setlistRoles(nameRoles);
-    }
-    //getdata();
     setFormData(oldData)
     handleClickOpen()
   }
@@ -114,7 +100,7 @@ const Users = () => {
   }
 
   const handleFormSubmit = () => {
-    console.log(formData);
+    //console.log(formData);
 
     if (formData.id) {
       async function setData(){
