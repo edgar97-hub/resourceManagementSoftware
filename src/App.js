@@ -31,7 +31,7 @@ function App() {
   const {currentUser} = useContext(AuthContext);
 
   const ExtraPath = ({ children }) => {
-    return  <Navigate     //replace={true} from="/"
+    return  <Navigate      
     to={{
       pathname: "/test/OrgChart.html",
     }}
@@ -44,6 +44,15 @@ function App() {
   };
 
 
+  class Orgchart extends React.Component {
+    render() {
+      return (
+        <div>
+          <meta http-equiv="Refresh" content="0; url=http://127.0.0.1:3000/test/OrgChart.html" />
+        </div>);
+    }
+  }
+
   return (
     <div className={currentMode === 'Dark' ? 'dark' : ''}>
       <BrowserRouter>
@@ -53,7 +62,8 @@ function App() {
             <Route path="forgot-password" element={<ForgotPassword />}/>
             <Route index element={<RequireAuth> <Home /> </RequireAuth>}/>
             <Route path="/setting" element={<RequireAuth> <Setting /> </RequireAuth>}/>
-            <Route  exact path="/org-chart" element={<ExtraPath></ExtraPath>}/>
+            {/*<Route  exact path="/org-chart" element={<ExtraPath></ExtraPath>}/> */}
+            <Route exact path="/org-chart" element={<Orgchart></Orgchart>}/>
           </Route>
         </Routes>
         <NotificationContainer />
