@@ -53,7 +53,7 @@ function App() {
             <Route path="forgot-password" element={<ForgotPassword />}/>
             <Route index element={<RequireAuth> <Home /> </RequireAuth>}/>
             <Route path="/setting" element={<RequireAuth> <Setting /> </RequireAuth>}/>
-            <Route  exact path="/OrgChart" element={<ExtraPath></ExtraPath>}/>
+            <Route  exact path="/org-chart" element={<ExtraPath></ExtraPath>}/>
           </Route>
         </Routes>
         <NotificationContainer />
