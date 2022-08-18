@@ -28,7 +28,7 @@ const Setting = () => {
    
         <ul className='tabs'>    
             <li data-tab-target="#home" className='active tab'>Roles</li>
-            <li data-tab-target="#pricing" className='tab'>Organigrama</li>
+            {/** <li data-tab-target="#pricing" className='tab'>Organigrama</li>*/}
             <li data-tab-target="#about" className='tab'>Procesos</li>
             <li data-tab-target="#usuarios" className='tab'>Usuarios</li>
         </ul>
@@ -36,9 +36,11 @@ const Setting = () => {
             <div id='home' data-tab-content className='active'>
                 <Roles/>
             </div>
+            {/**
             <div id='pricing' data-tab-content>
                 
             </div>
+             */}
             <div id='about' data-tab-content>
                 <h1>Procesos</h1>
                 <h1>this is the about</h1>

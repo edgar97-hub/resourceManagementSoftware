@@ -5,9 +5,7 @@ import { useNavigate } from "react-router-dom";
 import {AuthContext} from "../../contexts/AuthContext"
 import $ from 'jquery'
 import "./login.scss"
-import Example  from "./Notification.jsx"
 import {NotificationContainer, NotificationManager} from 'react-notifications';
-import { showSpinner } from '@syncfusion/ej2-react-popups';
 
 
  

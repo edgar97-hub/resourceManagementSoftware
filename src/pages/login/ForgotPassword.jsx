@@ -2,7 +2,6 @@ import React, { useRef, useState } from "react"
 import { Form, Button, Card, Alert } from "react-bootstrap"
 import { Link } from "react-router-dom"
 import {auth} from "../../firebase"
-import { Container } from "react-bootstrap"
 import "./login.scss"
 
 export default function ForgotPassword() {

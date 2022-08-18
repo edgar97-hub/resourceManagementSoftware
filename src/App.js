@@ -1,6 +1,7 @@
+  
 import React, { useEffect } from 'react';
 import './App.css';
-import Home from "./pages/home/Home";
+import {Home,Calendar,HumanTalentManagement} from "./pages";
 import Login from "./pages/login/Login";
 import ForgotPassword from "./pages/login/ForgotPassword";
 import Setting from "./pages/setting/Setting";
@@ -48,8 +49,9 @@ function App() {
     render() {
       return (
         <div>
-          <meta http-equiv="Refresh" content="0; url=http://127.0.0.1:3000/test/OrgChart.html" />
+           <meta http-equiv="Refresh" content="0; url=http://127.0.0.1:3000/test/OrgChart.html" />
         </div>);
+
     }
   }
 
@@ -62,8 +64,10 @@ function App() {
             <Route path="forgot-password" element={<ForgotPassword />}/>
             <Route index element={<RequireAuth> <Home /> </RequireAuth>}/>
             <Route path="/setting" element={<RequireAuth> <Setting /> </RequireAuth>}/>
-            {/*<Route  exact path="/org-chart" element={<ExtraPath></ExtraPath>}/> */}
-            <Route exact path="/org-chart" element={<Orgchart></Orgchart>}/>
+            <Route exact path="/org-chart" element={<RequireAuth> <Orgchart /> </RequireAuth>}/>
+            <Route path="/calendar" element={<RequireAuth> <Calendar /> </RequireAuth>}/>
+            <Route path="/human-talent-management" element={<RequireAuth> <HumanTalentManagement /> </RequireAuth>}/>
+
           </Route>
         </Routes>
         <NotificationContainer />
@@ -73,3 +77,4 @@ function App() {
 }
 
 export default App;
+ 

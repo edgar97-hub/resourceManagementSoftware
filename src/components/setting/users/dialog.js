@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
 import "./users.scss";
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';

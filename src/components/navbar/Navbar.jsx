@@ -5,14 +5,11 @@ import { FiShoppingCart } from 'react-icons/fi';
 import { BsChatLeft } from 'react-icons/bs';
 import { RiNotification3Line } from 'react-icons/ri';
 import { MdKeyboardArrowDown } from 'react-icons/md';
-import { TooltipComponent } from '@syncfusion/ej2-react-popups';
 import {  Chat, Notification, UserProfile }  from '../../components';
 import { useStateContext } from '../../contexts/ContextProvider';
 import avatar from '../../data/avatar3.png';
 import Tooltip from 'react-tooltip-lite';
 import { Link } from "react-router-dom";
-import ReactTooltip from "react-tooltip";
-import Tooltip2 from "@material-ui/core/Tooltip";
 
 const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
 

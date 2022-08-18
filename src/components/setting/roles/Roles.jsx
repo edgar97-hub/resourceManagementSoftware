@@ -5,7 +5,6 @@ import "./roles.scss";
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
-//import { Grid } from '@material-ui/core'
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import Grid from '@mui/material/Grid';
@@ -13,16 +12,10 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from '@mui/icons-material/Edit';
 import { DataGrid,GridToolbar } from '@mui/x-data-grid';
 import FormDialog from './dialog';
-import {
-  collection,
-  getDocs,
-  deleteDoc,
-  doc,getDoc,
-  onSnapshot,query,setDoc,addDoc
-} from "firebase/firestore";
+import {collection,getDocs,deleteDoc,doc,getDoc,onSnapshot,query,setDoc,addDoc} from "firebase/firestore";
 import { db } from "../../../firebase";
 
-const initialValue = { name: "", permissions: [ ] };
+const initialValue = { name: "", permissions: [],permissionCheckbox:[] };
 
 const Roles = () => {
 
@@ -31,16 +24,13 @@ const Roles = () => {
   const [tableData, setTableData] = useState([]);
   const [open, setOpen] = useState(false);
   const [formData, setFormData] = useState(initialValue);
-  const [formDataPermision, setFormDataPermision] = useState({});
+  const [formDataPermision, setFormDataPermision] = useState([]);
   var permissions = [];
 
   const handleClickOpen = (flat) => {
     setOpen(true);
   };
   const handleClose = () => {
-    permissions.some(el => {
-      el.is = false;
-    });
     setOpen(false);
     setFormData(initialValue)
   };
@@ -90,11 +80,6 @@ const Roles = () => {
 
   }, [])
 
-  const defaultColDef = {
-    sortable: true,
-    //flex: 1, filter: true,
-    //floatingFilter: true
-  }
   const eventData = (e) => {
     
     if(e.target){
@@ -104,7 +89,6 @@ const Roles = () => {
       setFormData({ ...formData, ["permission_identifiers"]: e })
     }
   }
- 
 
   const onGridReady = (params) => {
     setGridApi(params)
@@ -119,11 +103,9 @@ const Roles = () => {
         } 
       });
     }
-    //console.log(permissions)
-    oldData.oldpermissions = oldData.permissions;
-    oldData.permissions = permissions;
-    setFormData(oldData)
-    handleClickOpen()
+    oldData.permissionCheckbox = permissions;
+    setFormData(oldData);
+    handleClickOpen();
   }
   const handleDelete = (id) => {
     async function deleteData(){
@@ -133,13 +115,13 @@ const Roles = () => {
   }
 
   const handleFormSubmit = () => {
-    console.log(formData);
+    console.log(formData.permission_identifiers);
 
     if (formData.id) {
       async function setData(){
         await setDoc(doc(db, "roles", formData.id), {
           name: formData.name,
-          permissions: (formData.permission_identifiers)?formData.permission_identifiers:formData.oldpermissions
+          permissions: (formData.permission_identifiers)?formData.permission_identifiers:formData.permissions
         });
       }
       setData();
@@ -163,16 +145,14 @@ const Roles = () => {
    
  
   return (
-    <div className="roles"style={{ height: '100%',display: 'flex' }}>
+    <div className="roles" style={{ height: '100%',display: 'flex' }}>
       <Grid align="right" className='grid'>
         <Button variant="contained"   onClick={() => handleClickOpen("insert")}>Add role</Button>
       </Grid>
       <div className="aggridreact ag-theme-alpine " style={{ flexGrow: 1   }}>
         <AgGridReact className="ww"
-          //rowData={tableData}
           rowData={data} 
           columnDefs={columnDefs}
-          //defaultColDef={defaultColDef}
           onGridReady={onGridReady}
           animateRows={true} />
       </div>

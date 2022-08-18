@@ -21,8 +21,11 @@
 }
 [data-tab-content] {
     display: none;
+    
 }
 .active[data-tab-content]{
+    background-color: #545f60;
+
     display: block;
     padding: 20px;
     color: rgb(17, 16, 16);
@@ -30,9 +33,6 @@
     //background-color: #545f60;
     height: 520px;
     margin: 0px;
-    //border-bottom-right-radius:8px ;
-    //border-bottom-left-radius:8px ;
-
 }
 .tabs{
     display: flex;

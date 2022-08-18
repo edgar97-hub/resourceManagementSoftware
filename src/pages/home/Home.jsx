@@ -29,7 +29,7 @@ const Home = () => {
 
           </Link>
 
-          <Link to="/jobs" target="_blank" className="w" style={{ textDecoration: "none" }}>
+          <Link to="/human-talent-management" target="_blank" className="w" style={{ textDecoration: "none" }}>
              <FiSettings size={50}/>
              <p className="p-1"> GESTIÓN DEL TALENTO HUMANO</p>
           </Link>

@@ -1,12 +1,4 @@
 import React, { useState, useEffect } from "react";
-//import Button from '@material-ui/core/Button';
-//import Dialog from '@material-ui/core/Dialog';
-//import DialogActions from '@material-ui/core/DialogActions';
-//import DialogContent from '@material-ui/core/DialogContent';
-//import DialogContentText from '@material-ui/core/DialogContentText';
-//import DialogTitle from '@material-ui/core/DialogTitle';
-//import { TextField } from '@material-ui/core';
-import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
 import "./roles.scss";
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
@@ -24,19 +16,19 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 
 
 export default function FormDialog({open,handleClose,data,onChange,handleFormSubmit}) {
- const {id,name,permissions}  = data
+ const {id,name,permissions,permissionCheckbox}  = data
  const [selectedOptions, setSelectedOptions] = useState([]);
 
  useEffect(() => {
 
   const w2 = [];
-  permissions.some(el => {
+  permissionCheckbox.some(el => {
     if(el.is){
       w2.push(el.name);
     }
   });
   setPersonName(w2);
-  }, [permissions]);
+  }, [permissionCheckbox]);
 
  
  
@@ -45,11 +37,11 @@ export default function FormDialog({open,handleClose,data,onChange,handleFormSub
   const handleChange = (event) => {
     const { target: { value },} = event;
     setPersonName(typeof value === 'string' ? value.split(',') : value);
-    var ee = {"permissions":typeof value === 'string' ? value.split(',') : value};
+    var ee = {"permissionCheckbox":typeof value === 'string' ? value.split(',') : value};
 
     const w3 = [];
-    permissions.some(el => {
-      if(ee.permissions.includes(el.name)){
+    permissionCheckbox.some(el => {
+      if(ee.permissionCheckbox.includes(el.name)){
         w3.push(el.id);
       }
     });
@@ -78,7 +70,7 @@ export default function FormDialog({open,handleClose,data,onChange,handleFormSub
                 renderValue={(selected) => selected.join(', ')}
                 fullWidth
               >
-                {permissions.map((element) => (
+                {permissionCheckbox.map((element) => (
                   <MenuItem key={element.name} value={element.name}>
                     <Checkbox  checked={personName.indexOf(element.name) > -1}/>
                     <ListItemText primary={element.name} />

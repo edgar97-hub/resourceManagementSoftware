@@ -1,9 +1,5 @@
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:'Poopins', sans-serif;
-}
+ 
+@import url('https://cdn.syncfusion.com/ej2/material.css');
 
 .App {
   text-align: center;
@@ -43,3 +39,5 @@
     transform: rotate(360deg);
   }
 }
+
+ 
